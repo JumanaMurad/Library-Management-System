@@ -19,16 +19,17 @@ public class Patron {
     private String address;
     @OneToMany(mappedBy = "patron")
 //    @JsonManagedReference
-    private List<BorrowRecord> borrowRecord;
+    private List<BorrowRecord> borrowRecords;
 
     public Patron() {}
 
-    public Patron(String name, String email, String phone, String address)
+    public Patron(String name, String email, String phone, String address, List<BorrowRecord> borrowRecord)
     {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.borrowRecords = borrowRecord;
     }
 
     public Integer getId() {
@@ -71,11 +72,11 @@ public class Patron {
         this.address = address;
     }
 
-    public List<BorrowRecord> getBorrowRecord() {
-        return borrowRecord;
+    public List<BorrowRecord> getBorrowRecords() {
+        return borrowRecords;
     }
 
-    public void setBorrowRecord(List<BorrowRecord> borrowRecord) {
-        this.borrowRecord = borrowRecord;
+    public void setBorrowRecords(List<BorrowRecord> borrowRecord) {
+        this.borrowRecords = borrowRecord;
     }
 }

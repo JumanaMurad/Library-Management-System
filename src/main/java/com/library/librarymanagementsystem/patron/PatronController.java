@@ -1,5 +1,6 @@
 package com.library.librarymanagementsystem.patron;
 
+import com.library.librarymanagementsystem.patron.dto.PatronDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,43 +11,43 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/patrons")
 public class PatronController {
-    private final PatronRepository patronRepository;
+    private final PatronService patronService;
 
-    public PatronController(PatronRepository patronRepository) {
-        this.patronRepository = patronRepository;
+    public PatronController(PatronService patronService) {
+        this.patronService = patronService;
     }
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<Patron> findAll(){
-        return patronRepository.findAll();
+    public List<PatronDto> findAll(){
+        return patronService.findAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    public Optional<Patron> findById(@PathVariable Integer id)
+    public PatronDto findById(@PathVariable Integer id)
     {
-        return patronRepository.findById(id);
+        return patronService.findById(id);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void Create(@RequestBody Patron patron)
+    public void create(@RequestBody Patron patron)
     {
-        patronRepository.save(patron);
+        patronService.create(patron);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Patron update(@Valid @RequestBody Patron patron, @PathVariable Integer id)
+    public PatronDto update(@Valid @RequestBody Patron patron, @PathVariable Integer id)
     {
-        return  patronRepository.save(patron);
+        return  patronService.update(patron, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Integer id)
     {
-        patronRepository.deleteById(id);
+        patronService.delete(id);
     }
 }
