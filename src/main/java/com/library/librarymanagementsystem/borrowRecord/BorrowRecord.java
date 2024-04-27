@@ -1,9 +1,12 @@
 package com.library.librarymanagementsystem.borrowRecord;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.library.librarymanagementsystem.book.Book;
 import com.library.librarymanagementsystem.patron.Patron;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -13,11 +16,13 @@ public class BorrowRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotNull
     @Temporal(TemporalType.DATE)
-    @Column(name = "borrow_date", nullable = false)
+    @Column(name = "borrow_date")
     private Date borrowDate;
+    @NotNull
     @Temporal(TemporalType.DATE)
-    @Column(name = "due_date", nullable = false)
+    @Column(name = "due_date")
     private Date dueDate;
     @Temporal(TemporalType.DATE)
     @Column(name = "return_date", nullable = true)
@@ -30,7 +35,7 @@ public class BorrowRecord {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private Book book;
 
     public BorrowRecord() {}
