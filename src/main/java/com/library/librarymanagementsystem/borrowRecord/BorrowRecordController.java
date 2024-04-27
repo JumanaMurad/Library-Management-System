@@ -6,33 +6,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/borrow-records")
 public class BorrowRecordController {
 
-    private final BorrowRecordRepository borrowRecordRepository;
     private final BorrowRecordService borrowRecordService;
 
-    public BorrowRecordController(BorrowRecordRepository borrowRecordRepository, BorrowRecordService borrowRecordService)
+    public BorrowRecordController(BorrowRecordService borrowRecordService)
     {
-        this.borrowRecordRepository = borrowRecordRepository;
         this.borrowRecordService = borrowRecordService;
     }
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<BorrowRecord> findAll()
+    public List<BorrowRecordDto> findAll()
     {
-        return borrowRecordRepository.findAll();
+        return borrowRecordService.findAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    public Optional<BorrowRecord> findById(@PathVariable Integer id)
+    public BorrowRecordDto findById(@PathVariable Integer id)
     {
-        return borrowRecordRepository.findById(id);
+        return borrowRecordService.findById(id);
     }
 
     @PostMapping("")
@@ -41,17 +38,17 @@ public class BorrowRecordController {
         borrowRecordService.createBorrowRecord(borrowRecordDto);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BorrowRecord update(@Valid @RequestBody BorrowRecord borrowRecord, @PathVariable Integer id)
+    public BorrowRecordDto update(@Valid @RequestBody BorrowRecord borrowRecord, @PathVariable Integer id)
     {
-        return  borrowRecordRepository.save(borrowRecord);
+        return  borrowRecordService.updateBorrowRecord(borrowRecord, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Integer id)
     {
-        borrowRecordRepository.deleteById(id);
+        borrowRecordService.deleteBorrowRecord(id);
     }
 }
