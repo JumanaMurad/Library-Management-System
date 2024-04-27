@@ -15,25 +15,23 @@ public class BorrowRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "borrow_date")
     private Date borrowDate;
-    @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "due_date")
     private Date dueDate;
     @Temporal(TemporalType.DATE)
-    @Column(name = "return_date", nullable = true)
+    @Column(name = "return_date")
     private Date returnDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "patron_id", nullable = false)
+    @JoinColumn(name = "patron_id")
     @JsonIgnore
     private Patron patron;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id")
     @JsonBackReference
     private Book book;
 

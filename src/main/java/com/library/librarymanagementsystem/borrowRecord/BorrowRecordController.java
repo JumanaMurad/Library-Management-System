@@ -6,50 +6,33 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/borrow-records")
 public class BorrowRecordController {
 
     private final BorrowRecordService borrowRecordService;
 
-    public BorrowRecordController(BorrowRecordService borrowRecordService)
-    {
-        this.borrowRecordService = borrowRecordService;
-    }
+    public BorrowRecordController(BorrowRecordService borrowRecordService) {
+        this.borrowRecordService = borrowRecordService;}
 
-    @GetMapping("")
+    @GetMapping("api/borrow")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<BorrowRecordDto> findAll()
     {
         return borrowRecordService.findAll();
     }
-
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public BorrowRecordDto findById(@PathVariable Integer id)
-    {
-        return borrowRecordService.findById(id);
-    }
-
-    @PostMapping("")
+    @PostMapping("/api/borrow/{bookId}/patron/{patronId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody BorrowRecord borrowRecord) {
-        borrowRecordService.createBorrowRecord(borrowRecord);
+    public void borrowBook(@PathVariable Integer bookId, @PathVariable Integer patronId, @Valid @RequestBody BorrowRecord borrowRecord) {
+        borrowRecordService.borrowBook(bookId, patronId, borrowRecord);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("api/return/{bookId}/patron/{patronId}")
     @ResponseStatus(HttpStatus.OK)
-    public BorrowRecordDto update(@Valid @RequestBody BorrowRecord borrowRecord, @PathVariable Integer id)
+    public BorrowRecordDto returnBook(@PathVariable Integer bookId, @PathVariable Integer patronId, @Valid @RequestBody BorrowRecord borrowRecord)
     {
-        return  borrowRecordService.updateBorrowRecord(borrowRecord, id);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable Integer id)
-    {
-        borrowRecordService.deleteBorrowRecord(id);
+        return  borrowRecordService.returnBook(bookId, patronId, borrowRecord);
     }
 }
