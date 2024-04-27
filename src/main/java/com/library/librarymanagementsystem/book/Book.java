@@ -26,7 +26,7 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     @JsonManagedReference
-    private List<BorrowRecord> borrowRecord;
+    private List<BorrowRecord> borrowRecords;
 
 
     public Book() {}
@@ -72,11 +72,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public Integer getPublished_date() {
+    public Integer getPublished_year() {
         return published_year;
     }
 
-    public void setPublished_date(Integer published_year) {
+    public void setPublished_year(Integer published_year) {
         this.published_year = published_year;
     }
 
@@ -104,11 +104,11 @@ public class Book {
         this.total_pages = total_pages;
     }
 
-    public List<BorrowRecord> getBorrowRecord() {
-        return borrowRecord;
+    public List<BorrowRecord> getBorrowRecords() {
+        return borrowRecords;
     }
 
-    public void setBorrowRecord(List<BorrowRecord> borrowRecord) {
-        this.borrowRecord = borrowRecord;
+    public void setBorrowRecords(List<BorrowRecord> borrowRecords) {
+        this.borrowRecords = borrowRecords;
     }
 }
