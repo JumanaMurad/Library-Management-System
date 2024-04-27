@@ -6,11 +6,9 @@ import com.library.librarymanagementsystem.borrowRecord.mapper.BorrowRecordMappe
 import com.library.librarymanagementsystem.patron.Patron;
 import com.library.librarymanagementsystem.patron.PatronRepository;
 import com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto;
-import com.library.librarymanagementsystem.borrowRecord.BorrowRecord;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,21 +34,14 @@ public class BorrowRecordService {
         return borrowRecordMapper.convertToDtoList(borrowRecords);
     }
 
-    public BorrowRecordDto findById(Integer id)
-    {
-        BorrowRecord borrowRecord = borrowRecordRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Borrow Record not found with ID: " + id));
-        return borrowRecordMapper.convertToDto(borrowRecord);
-    }
-
     @Transactional
-    public void createBorrowRecord(BorrowRecord borrowRecord)
+    public void borrowBook(Integer bookId, Integer patronId, BorrowRecord borrowRecord)
     {
-        Book book = bookRepository.findById(borrowRecord.getBook().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with ID: " + borrowRecord.getBook().getId()));
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with ID: " + bookId));
 
-        Patron patron = patronRepository.findById(borrowRecord.getPatron().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Patron not found with ID: " + borrowRecord.getPatron().getId()));
+        Patron patron = patronRepository.findById(patronId)
+                .orElseThrow(() -> new IllegalArgumentException("Patron not found with ID: " + patronId));
 
         BorrowRecord newBorrowRecord = new BorrowRecord();
         newBorrowRecord.setBorrowDate(borrowRecord.getBorrowDate());
@@ -63,21 +54,14 @@ public class BorrowRecordService {
     }
 
     @Transactional
-    public BorrowRecordDto updateBorrowRecord(BorrowRecord borrowRecord, Integer id)
+    public BorrowRecordDto returnBook(Integer bookId, Integer patronId, BorrowRecord borrowRecord)
     {
-        BorrowRecord existingRecord = borrowRecordRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Borrow Record not found with ID: " + id));
+        BorrowRecord existingBorrowRecord = borrowRecordRepository.findByBookIdAndPatronId(bookId, patronId);
 
-        Date returnDate = borrowRecord.getReturnDate();
-        existingRecord.setReturnDate(returnDate);
-        BorrowRecord updatedRecord = borrowRecordRepository.save(existingRecord);
+        existingBorrowRecord.setReturnDate(borrowRecord.getReturnDate());
+        BorrowRecord updatedRecord = borrowRecordRepository.save(existingBorrowRecord);
 
         return borrowRecordMapper.convertToDto(updatedRecord);
-    }
-
-    @Transactional
-    public void deleteBorrowRecord(Integer id) {
-        borrowRecordRepository.deleteById(id);
     }
 
 }
