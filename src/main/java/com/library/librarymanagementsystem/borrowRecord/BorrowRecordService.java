@@ -2,10 +2,11 @@ package com.library.librarymanagementsystem.borrowRecord;
 
 import com.library.librarymanagementsystem.book.Book;
 import com.library.librarymanagementsystem.book.BookRepository;
-import com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto;
 import com.library.librarymanagementsystem.borrowRecord.mapper.BorrowRecordMapper;
 import com.library.librarymanagementsystem.patron.Patron;
 import com.library.librarymanagementsystem.patron.PatronRepository;
+import com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto;
+import com.library.librarymanagementsystem.borrowRecord.BorrowRecord;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,6 @@ public class BorrowRecordService {
 
     public List<BorrowRecordDto> findAll()
     {
-
         List<BorrowRecord> borrowRecords = borrowRecordRepository.findAll();
         return borrowRecordMapper.convertToDtoList(borrowRecords);
     }
@@ -44,22 +44,22 @@ public class BorrowRecordService {
     }
 
     @Transactional
-    public void createBorrowRecord(BorrowRecordDto borrowRecordDto)
+    public void createBorrowRecord(BorrowRecord borrowRecord)
     {
-        Book book = bookRepository.findById(borrowRecordDto.bookId())
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with ID: " + borrowRecordDto.bookId()));
+        Book book = bookRepository.findById(borrowRecord.getBook().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with ID: " + borrowRecord.getBook().getId()));
 
-        Patron patron = patronRepository.findById(borrowRecordDto.patronId())
-                .orElseThrow(() -> new IllegalArgumentException("Patron not found with ID: " + borrowRecordDto.patronId()));
+        Patron patron = patronRepository.findById(borrowRecord.getPatron().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Patron not found with ID: " + borrowRecord.getPatron().getId()));
 
-        BorrowRecord borrowRecord = new BorrowRecord();
-        borrowRecord.setBorrowDate(borrowRecordDto.borrowDate());
-        borrowRecord.setDueDate(borrowRecordDto.dueDate());
-        borrowRecord.setReturnDate(null);
-        borrowRecord.setBook(book);
-        borrowRecord.setPatron(patron);
+        BorrowRecord newBorrowRecord = new BorrowRecord();
+        newBorrowRecord.setBorrowDate(borrowRecord.getBorrowDate());
+        newBorrowRecord.setDueDate(borrowRecord.getDueDate());
+        newBorrowRecord.setReturnDate(null);
+        newBorrowRecord.setBook(book);
+        newBorrowRecord.setPatron(patron);
 
-        borrowRecordRepository.save(borrowRecord);
+        borrowRecordRepository.save(newBorrowRecord);
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.library.librarymanagementsystem.borrowRecord;
 
 import com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto;
+import com.library.librarymanagementsystem.borrowRecord.BorrowRecord;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,8 @@ public class BorrowRecordController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void Create(@Valid @RequestBody BorrowRecordDto borrowRecordDto) {
-        borrowRecordService.createBorrowRecord(borrowRecordDto);
+    public void create(@Valid @RequestBody BorrowRecord borrowRecord) {
+        borrowRecordService.createBorrowRecord(borrowRecord);
     }
 
     @PutMapping("/{id}")

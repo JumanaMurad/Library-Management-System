@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.library.librarymanagementsystem.book.Book;
 import com.library.librarymanagementsystem.patron.Patron;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
