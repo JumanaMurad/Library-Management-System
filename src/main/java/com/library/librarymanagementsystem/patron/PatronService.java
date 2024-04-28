@@ -5,7 +5,6 @@ import com.library.librarymanagementsystem.patron.mapper.PatronMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PatronService
@@ -30,23 +29,28 @@ public class PatronService
     public PatronDto findById(Integer id)
     {
         Patron patron = patronRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Borrow Record not found with ID: " + id));;
+                .orElseThrow(() -> new IllegalArgumentException("Borrow Record not found with ID: " + id));
+
         return patronMapper.convertToDto(patron);
     }
 
-    public void create(Patron patron)
+    public void create(PatronDto patronDto)
     {
-        patronRepository.save(patron);
+        patronRepository.save(patronMapper.convertToPatron(patronDto));
     }
 
-    public PatronDto update(Patron patron, Integer id)
+    public PatronDto update(PatronDto patronDto, Integer id)
     {
         Patron existingPatron = patronRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Borrow Record not found with ID: " + id));
-        String name = patron.getName();
-        String email = patron.getEmail();
+        String name = patronDto.name();
+        String email = patronDto.email();
+        String phone = patronDto.phone();
+        String address = patronDto.address();
         existingPatron.setName(name);
         existingPatron.setEmail(email);
+        existingPatron.setPhone(phone);
+        existingPatron.setAddress(address);
 
         Patron updatedPatron = patronRepository.save(existingPatron);
 
