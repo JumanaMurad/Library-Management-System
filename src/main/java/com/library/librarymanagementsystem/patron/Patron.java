@@ -1,7 +1,10 @@
 package com.library.librarymanagementsystem.patron;
 
 import com.library.librarymanagementsystem.borrowRecord.BorrowRecord;
+import com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -11,14 +14,17 @@ public class Patron {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false, length = 100)
+    @NotNull(message = "Name field should not be empty!")
+    @Column(length = 100)
     private String name;
+    @NotNull(message = "Email field should not be empty!")
+    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            message = "Please enter a valid email address!")
     @Column(unique = true, nullable = false)
     private String email;
     private String phone;
     private String address;
     @OneToMany(mappedBy = "patron")
-//    @JsonManagedReference
     private List<BorrowRecord> borrowRecords;
 
     public Patron() {}

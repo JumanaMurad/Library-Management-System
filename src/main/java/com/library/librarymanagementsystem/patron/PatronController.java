@@ -3,8 +3,12 @@ package com.library.librarymanagementsystem.patron;
 import com.library.librarymanagementsystem.patron.dto.PatronDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,16 +36,16 @@ public class PatronController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody Patron patron)
+    public void create(@Valid @RequestBody PatronDto patronDto)
     {
-        patronService.create(patron);
+        patronService.create(patronDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PatronDto update(@Valid @RequestBody Patron patron, @PathVariable Integer id)
+    public PatronDto update(@Valid @RequestBody PatronDto patronDto, @PathVariable Integer id)
     {
-        return  patronService.update(patron, id);
+        return  patronService.update(patronDto, id);
     }
 
     @DeleteMapping("/{id}")
@@ -49,5 +53,21 @@ public class PatronController {
     public void delete(@PathVariable Integer id)
     {
         patronService.delete(id);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handelMethodArgumentNotValidException(
+            MethodArgumentNotValidException exp)
+    {
+        var errors = new HashMap<String, String>();
+
+        exp.getBindingResult().getAllErrors()
+                .forEach(error -> {
+                    var fieldName = ((FieldError) error).getField();
+                    var errorMessage = error.getDefaultMessage();
+                    errors.put(fieldName, errorMessage);
+                });
+
+        return  new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

@@ -11,12 +11,28 @@ import java.util.stream.Collectors;
 public class PatronMapper
 {
 
-    //    Method to convert entity to DTO
+    //    Method to convert DTO to Entity
+    public Patron convertToPatron(PatronDto patronDto)
+    {
+        return new Patron(
+                patronDto.name(),
+                patronDto.email(),
+                patronDto.phone(),
+                patronDto.address(),
+                patronDto.borrowRecords()
+        );
+    }
+
+    //    Method to convert Entity to DTO
     public PatronDto convertToDto(Patron patron)
     {
         return new PatronDto(
+                patron.getId(),
                 patron.getName(),
-                patron.getEmail()
+                patron.getEmail(),
+                patron.getPhone(),
+                patron.getAddress(),
+                patron.getBorrowRecords()
         );
     }
 
