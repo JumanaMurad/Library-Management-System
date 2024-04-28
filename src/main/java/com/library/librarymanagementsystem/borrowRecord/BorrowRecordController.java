@@ -17,22 +17,16 @@ public class BorrowRecordController {
     public BorrowRecordController(BorrowRecordService borrowRecordService) {
         this.borrowRecordService = borrowRecordService;}
 
-    @GetMapping("api/borrow")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<BorrowRecordDto> findAll()
-    {
-        return borrowRecordService.findAll();
-    }
     @PostMapping("/api/borrow/{bookId}/patron/{patronId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void borrowBook(@PathVariable Integer bookId, @PathVariable Integer patronId, @Valid @RequestBody BorrowRecord borrowRecord) {
-        borrowRecordService.borrowBook(bookId, patronId, borrowRecord);
+    public void borrowBook(@PathVariable Integer bookId, @PathVariable Integer patronId) {
+        borrowRecordService.borrowBook(bookId, patronId);
     }
 
     @PutMapping("api/return/{bookId}/patron/{patronId}")
     @ResponseStatus(HttpStatus.OK)
-    public BorrowRecordDto returnBook(@PathVariable Integer bookId, @PathVariable Integer patronId, @Valid @RequestBody BorrowRecord borrowRecord)
+    public BorrowRecordDto returnBook(@PathVariable Integer bookId, @PathVariable Integer patronId)
     {
-        return  borrowRecordService.returnBook(bookId, patronId, borrowRecord);
+        return  borrowRecordService.returnBook(bookId, patronId);
     }
 }
