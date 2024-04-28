@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.library.librarymanagementsystem.book.Book;
 import com.library.librarymanagementsystem.patron.Patron;
+import com.library.librarymanagementsystem.patron.dto.PatronDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,9 +19,6 @@ public class BorrowRecord {
     @Temporal(TemporalType.DATE)
     @Column(name = "borrow_date")
     private Date borrowDate;
-    @Temporal(TemporalType.DATE)
-    @Column(name = "due_date")
-    private Date dueDate;
     @Temporal(TemporalType.DATE)
     @Column(name = "return_date")
     private Date returnDate;
@@ -37,9 +35,8 @@ public class BorrowRecord {
 
     public BorrowRecord() {}
 
-    public BorrowRecord(Date borrowDate, Date dueDate, Date returnDate, Book book, Patron patron) {
+    public BorrowRecord(Date borrowDate, Date returnDate, Book book, Patron patron) {
         this.borrowDate = borrowDate;
-        this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.book = book;
         this.patron = patron;
@@ -59,14 +56,6 @@ public class BorrowRecord {
 
     public void setBorrowDate(Date borrowDate) {
         this.borrowDate = borrowDate;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
     }
 
     public Date getReturnDate() {

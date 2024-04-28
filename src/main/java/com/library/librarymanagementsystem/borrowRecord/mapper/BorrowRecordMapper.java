@@ -13,10 +13,8 @@ public class BorrowRecordMapper
     //    Method to convert entity to DTO
     public BorrowRecordDto convertToDto(BorrowRecord borrowRecord)
     {
-        return new com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto(
-                borrowRecord.getId(),
+        return new BorrowRecordDto(
                 borrowRecord.getBorrowDate(),
-                borrowRecord.getDueDate(),
                 borrowRecord.getReturnDate(),
                 borrowRecord.getPatron().getId(),
                 borrowRecord.getBook().getId()
