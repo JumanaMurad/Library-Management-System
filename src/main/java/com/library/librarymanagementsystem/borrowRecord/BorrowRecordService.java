@@ -9,7 +9,7 @@ import com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Date;
 
 @Service
 public class BorrowRecordService {
@@ -28,14 +28,8 @@ public class BorrowRecordService {
         this.borrowRecordMapper = borrowRecordMapper;
     }
 
-    public List<BorrowRecordDto> findAll()
-    {
-        List<BorrowRecord> borrowRecords = borrowRecordRepository.findAll();
-        return borrowRecordMapper.convertToDtoList(borrowRecords);
-    }
-
     @Transactional
-    public void borrowBook(Integer bookId, Integer patronId, BorrowRecord borrowRecord)
+    public void borrowBook(Integer bookId, Integer patronId)
     {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with ID: " + bookId));
@@ -44,8 +38,7 @@ public class BorrowRecordService {
                 .orElseThrow(() -> new IllegalArgumentException("Patron not found with ID: " + patronId));
 
         BorrowRecord newBorrowRecord = new BorrowRecord();
-        newBorrowRecord.setBorrowDate(borrowRecord.getBorrowDate());
-        newBorrowRecord.setDueDate(borrowRecord.getDueDate());
+        newBorrowRecord.setBorrowDate(new Date());
         newBorrowRecord.setReturnDate(null);
         newBorrowRecord.setBook(book);
         newBorrowRecord.setPatron(patron);
@@ -54,11 +47,11 @@ public class BorrowRecordService {
     }
 
     @Transactional
-    public BorrowRecordDto returnBook(Integer bookId, Integer patronId, BorrowRecord borrowRecord)
+    public BorrowRecordDto returnBook(Integer bookId, Integer patronId)
     {
         BorrowRecord existingBorrowRecord = borrowRecordRepository.findByBookIdAndPatronId(bookId, patronId);
 
-        existingBorrowRecord.setReturnDate(borrowRecord.getReturnDate());
+        existingBorrowRecord.setReturnDate(new Date());
         BorrowRecord updatedRecord = borrowRecordRepository.save(existingBorrowRecord);
 
         return borrowRecordMapper.convertToDto(updatedRecord);
