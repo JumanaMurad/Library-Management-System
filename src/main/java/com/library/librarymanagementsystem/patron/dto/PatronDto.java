@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 public record PatronDto(
-        Integer id,
         String name,
         String email,
         String phone,

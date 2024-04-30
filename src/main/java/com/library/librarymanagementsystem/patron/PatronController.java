@@ -2,6 +2,7 @@ package com.library.librarymanagementsystem.patron;
 
 import com.library.librarymanagementsystem.patron.dto.PatronDto;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,12 +15,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/patrons")
+@RequiredArgsConstructor
 public class PatronController {
-    private final PatronService patronService;
 
-    public PatronController(PatronService patronService) {
-        this.patronService = patronService;
-    }
+    private final PatronService patronService;
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.ACCEPTED)
