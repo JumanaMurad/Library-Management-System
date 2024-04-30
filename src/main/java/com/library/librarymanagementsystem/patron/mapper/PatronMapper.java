@@ -27,7 +27,6 @@ public class PatronMapper
     public PatronDto convertToDto(Patron patron)
     {
         return new PatronDto(
-                patron.getId(),
                 patron.getName(),
                 patron.getEmail(),
                 patron.getPhone(),

@@ -1,29 +1,45 @@
 package com.library.librarymanagementsystem.patron;
 
 import com.library.librarymanagementsystem.borrowRecord.BorrowRecord;
-import com.library.librarymanagementsystem.borrowRecord.dto.BorrowRecordDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
+@Data
 @Entity
 @Table
-public class Patron {
+public class Patron implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false)
     private Integer id;
+
     @NotNull(message = "Name field should not be empty!")
     @Column(length = 100)
     private String name;
+
     @NotNull(message = "Email field should not be empty!")
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             message = "Please enter a valid email address!")
     @Column(unique = true, nullable = false)
     private String email;
+
+    private String password;
+
     private String phone;
+
     private String address;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "patron")
     private List<BorrowRecord> borrowRecords;
 
@@ -38,51 +54,38 @@ public class Patron {
         this.borrowRecords = borrowRecord;
     }
 
-    public Integer getId() {
-        return id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
+    @Override
+    public String getUsername() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public String getPhone() {
-        return phone;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public List<BorrowRecord> getBorrowRecords() {
-        return borrowRecords;
-    }
-
-    public void setBorrowRecords(List<BorrowRecord> borrowRecord) {
-        this.borrowRecords = borrowRecord;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
