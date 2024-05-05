@@ -7,9 +7,11 @@ import com.library.librarymanagementsystem.patron.Patron;
 import com.library.librarymanagementsystem.patron.dto.PatronDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "borrow_record")
 public class BorrowRecord {
@@ -40,45 +42,5 @@ public class BorrowRecord {
         this.returnDate = returnDate;
         this.book = book;
         this.patron = patron;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getBorrowDate() {
-        return borrowDate;
-    }
-
-    public void setBorrowDate(Date borrowDate) {
-        this.borrowDate = borrowDate;
-    }
-
-    public Date getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public Patron getPatron() {
-        return patron;
-    }
-
-    public void setPatron(Patron patron) {
-        this.patron = patron;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
     }
 }
